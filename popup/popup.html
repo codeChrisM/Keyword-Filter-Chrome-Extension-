@@ -7,6 +7,18 @@
 		margin: 2em 0;
 		border-top: solid #000;
 	}
+	.keyword-list{
+		display: flex;
+		justify-content: space-between;
+		list-style: none;
+		flex-wrap: wrap;
+		padding: 0;
+	}
+	li.keyword-list__item {
+		background-color: lightgrey;
+		padding: .25rem;
+		margin: .2rem 0;
+	}
 
 </style>
 </head>
@@ -14,13 +26,13 @@
 	<h3>Covid Filter</div> - Alpha<br>
 		<span><i>V0.0.1</i></span>
 	</h3>
-	<form >
+	<div >
 		<label><b>Step:1</b></br>
 		Do you want this filter on?
 		</label>
 		<input id="filterStatus" type="checkbox" >
-		<input id="filterStatus" type="text" ><button id="" type="submit"> Add</button>
-	</form>
+		<input id="keywordInput" type="text" ><button id="AddKeyButton" > Add</button>
+	</div>
 	<div>
 		<ul class="keyword-list">
 			<li class="keyword-list__item">covid</li>

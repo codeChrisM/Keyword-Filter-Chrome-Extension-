@@ -5,4 +5,32 @@
 
 //each list item gets an "x" to remove
 
+window.addEventListener('load', function(){
 
+	let AddKeyButton = document.querySelector('#AddKeyButton');
+	let keywordInput = document.querySelector('#keywordInput');
+	
+	let list = document.querySelector('.keyword-list');
+	let list_item = document.querySelector('.keyword-list__item');
+	
+	AddKeyButton.addEventListener('click',function(){
+		let keyword = keywordInput.value;
+		let li = document.createElement('li');
+	
+		li.classList.add('keyword-list__item');
+		li.innerText = keyword;
+	
+		list.appendChild(li)
+	});
+
+	keywordInput.addEventListener("keydown", function(event) {
+		// Number 13 is the "Enter" key on the keyboard
+		if (event.keyCode === 13) {
+		  event.preventDefault();
+		  // Trigger the button element with a click
+		  AddKeyButton.click();
+		}
+	  });
+
+
+});
