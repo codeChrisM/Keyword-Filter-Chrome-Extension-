@@ -16,10 +16,10 @@ function debounceFunction(func, delay) {
 function hideVideos(){
     var timerStart = performance.now()
 
-    if(document.querySelectorAll("ytd-rich-item-renderer").length){
+    if(document.querySelectorAll("ytd-rich-item-renderer").length){ // used for HOME
         itemList = document.querySelectorAll("ytd-rich-item-renderer");
     }
-    // else if(document.querySelectorAll("ytd-video-renderer").length){
+    // else if(document.querySelectorAll("ytd-video-renderer").length){ // used for trending listing
     //     itemList = document.querySelectorAll("ytd-video-renderer");
     // };
 
@@ -30,6 +30,8 @@ function hideVideos(){
                 let titleArray = title.split(" ");
                 let titleToLower = titleArray.join().toLowerCase();
                 let titleLowerArray = titleToLower.split(",");
+
+                //***array should be UPDATED to run through input list
                 const searchWords = ['covid-19', 'trump','yang','goku', 'ramsey'];
     
                 const matchesFound = titleLowerArray.filter(element => searchWords.includes(element));
