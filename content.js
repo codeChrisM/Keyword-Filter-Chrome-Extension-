@@ -1,0 +1,58 @@
+let itemList = [];
+var timerId;
+
+window.addEventListener('scroll', function(){
+    debounceFunction(hideVideos, 500)
+});
+
+function debounceFunction(func, delay) {
+    // Cancels the setTimeout method execution
+    clearTimeout(timerId)
+
+    // Executes the func after delay time.
+    timerId  =  setTimeout(func, delay)
+}
+
+function hideVideos(){
+    var timerStart = performance.now()
+
+    if(document.querySelectorAll("ytd-rich-item-renderer").length){
+        itemList = document.querySelectorAll("ytd-rich-item-renderer");
+    }
+    // else if(document.querySelectorAll("ytd-video-renderer").length){
+    //     itemList = document.querySelectorAll("ytd-video-renderer");
+    // };
+
+        for(let i=0; itemList.length > i; i++){
+            let title = itemList[i].querySelector("h3");
+            if(title != null){
+                title = title.innerText;
+                let titleArray = title.split(" ");
+                let titleToLower = titleArray.join().toLowerCase();
+                let titleLowerArray = titleToLower.split(",");
+                const searchWords = ['covid-19', 'trump','yang','goku', 'ramsey'];
+    
+                const matchesFound = titleLowerArray.filter(element => searchWords.includes(element));
+    
+                if(matchesFound.length > 0 && itemList[i].style.display !== "none"){
+                    console.log(title);
+                    itemList[i].style.display = "none";
+                }
+            }
+        }
+    var timerEnd = performance.now()
+    console.log("Call time: " + (timerEnd - timerStart) + " milliseconds.")
+};  
+
+window.addEventListener('scroll', function(){
+    debounceFunction(hideVideos, 500)
+});
+
+
+
+  
+
+
+
+
+
