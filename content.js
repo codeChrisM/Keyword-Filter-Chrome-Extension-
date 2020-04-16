@@ -47,8 +47,23 @@ function hideVideos(){
 };  
 
 window.addEventListener('scroll', function(){
-    debounceFunction(hideVideos, 500)
+    debounceFunction(hideVideos, 500);
+
+    getValues();
 });
+
+
+
+
+
+
+
+function getValues() {
+    console.log("value");
+    chrome.storage.sync.get(['on', 'keywords', 'reverse'], function (data) {
+        console.log(data);
+    });
+}
 
 
 

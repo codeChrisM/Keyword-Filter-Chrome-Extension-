@@ -18,20 +18,46 @@
 		background-color: lightgrey;
 		padding: .25rem;
 		margin: .2rem 0;
+		border-radius: 5px;
 	}
+	
+	li.keyword-list__item {
+		padding: .25rem;
+		margin: .2rem 0;
+		border-radius: 5px;
+	}
+	.close-item{
+		background: #ececec;
+		border-radius: 100%;
+		width: 1rem;
+		color: black;
+		margin: 0 0 0 .5rem;
+		border: 3px solid darkgrey;
+		display: inline-block;
+		text-align: center;
+		text-decoration: none;
+		transition: all .25s;
+	}
+	.close-item:hover{
+		background: red;
+		border-color: red;
+		cursor: pointer;
+		color:#fff;
+	}
+
 
 </style>
 </head>
 <body>
-	<h3>Covid Filter</div> - Alpha<br>
-		<span><i>V0.0.1</i></span>
-	</h3>
+	<h3>Covid Filter</h3>
 	<div >
 		<label><b>Step:1</b></br>
 		Do you want this filter on?
 		</label>
-		<input id="filterStatus" type="checkbox" >
-		<input id="keywordInput" type="text" ><button id="AddKeyButton" > Add</button>
+		<input type="checkbox" name="onSwitch" class="onSwitch-checkbox" id="onSwitch">
+		<input id="keywordInput" type="text" >
+		<button id="AddKeyButton" > Add</button>
+		<button id="getValues">getValues</button>
 	</div>
 	<div>
 		<ul class="keyword-list">
@@ -48,3 +74,4 @@
 	</div>
 </body>
 </html>	
+
