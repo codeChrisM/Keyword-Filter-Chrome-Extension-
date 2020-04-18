@@ -1,9 +1,6 @@
 let itemList = [];
 var timerId;
-
-window.addEventListener('scroll', function(){
-    debounceFunction(hideVideos, 500)
-});
+const searchWords = [];
 
 function debounceFunction(func, delay) {
     // Cancels the setTimeout method execution
@@ -32,7 +29,7 @@ function hideVideos(){
                 let titleLowerArray = titleToLower.split(",");
 
                 //***array should be UPDATED to run through input list
-                const searchWords = ['covid-19', 'trump','yang','goku', 'ramsey'];
+                
     
                 const matchesFound = titleLowerArray.filter(element => searchWords.includes(element));
     
@@ -49,25 +46,10 @@ function hideVideos(){
 window.addEventListener('scroll', function(){
     debounceFunction(hideVideos, 500);
 
-    getValues();
+    
 });
 
 
-
-
-
-
-
-function getValues() {
-    console.log("value");
-    chrome.storage.sync.get(['on', 'keywords', 'reverse'], function (data) {
-        console.log(data);
-    });
-}
-
-
-
-  
 
 
 

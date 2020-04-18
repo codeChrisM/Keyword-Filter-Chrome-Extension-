@@ -8,51 +8,74 @@
 //each list item gets an "x" to remove
 
 window.addEventListener('load', function () {
-	getValues();
-
-
+	
+	
 	let AddKeyButton = document.querySelector('#AddKeyButton');
-	let keywordInput = document.querySelector('#keywordInput');
-
-	let list = document.querySelector('.keyword-list');
-
-	let keywordArray = [];
-
-	
-
-	function makeList(array) {
-		// Establish the array which acts as a data source for the list
-		let keywordArrayList = keywordArray;
-
-		// Set up a loop that goes through the items in listItems one at a time
-		let numberOfListItems = keywordArrayList.length;
-	
-		for (let i = 0; i < numberOfListItems; ++i) {
-
-			let li = document.createElement('li');
-
-			// Add the item text
-			li.innerHTML = "<li class='keyword-list__item'>" + keywordArrayList[i] + "<a class='close-item' href=''>x</a></li>";
-
-			list.appendChild(li)
-			keywordInput.value = '';
-		}
-	}
+	let keywordInput = document.querySelector('#keywordInput');	
+	let list = document.querySelector('.keyword-list');	
+	let keywordArrayList = [];
 	
 
 
+	var getPromise = new Promise(function(resolve, reject) {
+		// ***update to async await instead of a setTimeout.
+		getValues();
+
+		setTimeout(() => {			
+			if (keywordArrayList.length) {
+			  resolve("Stuff worked! Array Good");
+			}
+			else {
+			  reject(Error("It broke, need more time?"));
+			}
+		}, 1000);
+
+	});
+
+	var savePromise = new Promise(function(resolve, reject) {
+		// ***update to async await instead of a setTimeout.
+
+		saveChanges();
+
+		setTimeout(() => {			
+			if (keywordArrayList.length) {
+			  resolve("Saved Success");
+			}
+			else {
+			  reject(Error("FAILED to SAVE!!!"));
+			}
+		}, 1000);
+
+	});
 
 
+	getPromise.then(function(result) {
+		console.log("befefore make list:", keywordArrayList);
+		makeList(keywordArrayList);	
+		console.log(result); // "Stuff worked!"
+	}, function(err) {
+		console.log(err); // Error: "It broke"
+	});
 
+	savePromise.then(function(result) {
+		console.log(result); // "Stuff worked!"
+	}, function(err) {
+		console.log(err); // Error: "It broke"
+	});
+
+
+	
 	AddKeyButton.addEventListener('click', function () {
 		let keyword = keywordInput.value;
 		let li = document.createElement('li');
 		
 		// Add the item text
-		li.innerHTML = "<li class='keyword-list__item'>" + keywordArrayList[i] + "<a class='close-item' href=''>x</a></li>";
+		li.innerHTML = "<li class='keyword-list__item'>" + keyword + "<a class='close-item' href=''>x</a></li>";
 		list.appendChild(li)
 
-		keywordArray.push(keyword);
+
+
+		keywordArrayList.push(keyword);
 		keywordInput.value = '';
 
 		saveChanges();
@@ -63,69 +86,69 @@ window.addEventListener('load', function () {
 			event.preventDefault();
 			AddKeyButton.click();
 		}
+		// closeListeners();
 	});
 
-	let onSwitch = document.getElementById("onSwitch")
-	let getValueButton = document.getElementById("getValues")
+	// let onSwitch = document.getElementById("onSwitch")
 
-	onSwitch.addEventListener('change', function () {
-		saveChanges();
-	});
-
-	getValueButton.addEventListener('click', function () {
-		getValues();
-	});
+	// onSwitch.addEventListener('change', function () {
+	// 	saveChanges();
+	// });
 
 	function saveChanges() {
 		chrome.storage.sync.set({
 			'on': onSwitch.checked,
-			'keywords': keywordArray,
+			'keywords': keywordArrayList,
 			'reverse': false
 		}, function () {
 			console.log('succesfully saved');
 		});
 	}
 
-	function getValues() {
+	function getValues() {		
 		chrome.storage.sync.get(['on', 'keywords', 'reverse'], function (data) {
 			console.log(data);
-			keywordArray = data.keywords;	
-			makeList(keywordArray);		
+			keywordArrayList = data.keywords;		
+			console.log("getvalue:", keywordArrayList);			
 		});
+
+	}
+
+	function makeList(targetArray) {
+		console.log("targetArray:", targetArray);
+		// Set up a loop that goes through the items in listItems one at a time
+		let numberOfListItems = targetArray.length;
+		
+		for (let j = 0; j < numberOfListItems; ++j) {
+			let li = document.createElement('li');
+
+			// Add the item text
+			li.innerHTML = "<li class='keyword-list__item'>" + targetArray[j] + "<a class='close-item' href=''>x</a></li>";
+			
+			list.appendChild(li)
+
+			let closeButton = li.querySelector('.close-item');
+			closeButton.addEventListener('click', function(event) {
+					var array = keywordArrayList;
+					var newarr = array.filter(function(a){return a !== targetArray[j] });
+					console.log("J:", targetArray[j]);
+					keywordArrayList = newarr;
+					console.log(keywordArrayList);
+					saveChanges();
+					promise.then(function(result) {
+						makeList(keywordArrayList);	
+						console.log(result); // "Stuff worked!"
+					}, function(err) {
+						console.log(err); // Error: "It broke"
+					});
+	
+			});		
+
+			keywordInput.value = '';
+		}		
 	}
 
 
-
-	// // Get a value.
-	// if ($('#myonoffswitch').is(':checked')) {
-	//     localStorage.mydata = 'y';
-	// } else {
-	//     localStorage.mydata = 'n';
-	// }
-
-	// Save it using the Chrome extension storage API.
-	//   chrome.storage.sync.set({
-	//       'value': localStorage.mydata
-	//   }, function () {
-
-	//   });
-
-
-	// Save it using the Chrome extension storage API.
-
-
-
-	//   chrome.storage.onChanged.addListener(function(changes, namespace) {
-	// 	  for (key in changes) {
-	// 		var storageChange = changes[key];
-	// 		console.log('Storage key "%s" in namespace "%s" changed. ' +
-	// 					'Old value was "%s", new value is "%s".',
-	// 					key,
-	// 					namespace,
-	// 					storageChange.oldValue,
-	// 					storageChange.newValue);
-	// 	  }
-	// 	});
 });
 
 
