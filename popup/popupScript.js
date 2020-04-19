@@ -29,26 +29,22 @@ var app = {
 
 
 		AddKeyButton.addEventListener('click', function () {
-			let li = document.createElement('li');
-			
-			// Add the item text
-			// li.innerHTML = "<li class='keyword-list__item'>" + keywordInput.value + "<a class='close-item' href=''>xx</a></li>";
-			li.innerHTML = "<li class='keyword-list__item'>" + keywordInput.value + "</li>";
-			
-
-			ul_List.appendChild(li)
-	
-	
-	
+		
 			keywordArray.push(keywordInput.value);
 			keywordInput.value = '';
+
+			makeList(keywordArray);
 
 			//sent this to background
 			chrome.runtime.sendMessage({fn: 'setKeys',  keywords: keywordArray});
 
+
 			console.log("added new word to keywordArray: ", keywordArray);
+
+
 		});
-	
+		
+
 
 
 
@@ -56,9 +52,19 @@ var app = {
 			if (event.keyCode === 13) {	// Number 13 is the "Enter" key on the keyboard
 				event.preventDefault();
 				AddKeyButton.click();
-			}
-		
+			}		
 		});
+
+
+		function sendMessageToCurrentTab(message){
+			setTimeout(() => {
+				chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+					chrome.tabs.sendMessage(tabs[0].id, message);
+				});
+			},1000);
+		}
+		
+		
 
 
 
@@ -66,34 +72,33 @@ var app = {
 			console.log("targetArray:", targetArray);
 			// Set up a loop that goes through the items in listItems one at a time
 			let numberOfListItems = targetArray.length;
+
+			console.log(targetArray);
+			while ( ul_List.firstChild ) {
+			ul_List.removeChild( ul_List.firstChild );
+			}
 			
 			for (let j = 0; j < numberOfListItems; ++j) {
-				let li = document.createElement('li');
+				let li = document.createElement('li');	
 	
-				// Add the item text
-				// li.innerHTML = "<li class='keyword-list__item'>" + keywordInput.value + "<a class='close-item' href=''>xx</a></li>";
-				li.innerHTML = "<li class='keyword-list__item'>" + keywordInput.value + "</li>";
+				li.innerHTML = "<li class='keyword-list__item'>" + targetArray[j]+ "<a class='close-item' href=''></a></li>";
 				
 				
-				ul_List.appendChild(li)
-	
-				// let closeButton = li.querySelector('.close-item');
-				// closeButton.addEventListener('click', function(event) {
+				ul_List.appendChild(li);
+				
+			}	
+			
+			sendMessageToCurrentTab({keywords: keywordArray})
 
-				// 	makeList(targetArray);				
-				// });		
-
-			}		
 		}
-
-
-
 	}
 }
 
 
 document.addEventListener("DOMContentLoaded", function(){
 	app.init();
+
+
 });
 
 

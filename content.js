@@ -1,6 +1,8 @@
 let itemList = [];
 var timerId;
 
+let searchWords;
+
 function debounceFunction(func, delay) {
     // Cancels the setTimeout method execution
     clearTimeout(timerId)
@@ -27,9 +29,7 @@ function hideVideos(){
                 let titleToLower = titleArray.join().toLowerCase();
                 let titleLowerArray = titleToLower.split(",");
 
-                //***array should be UPDATED to run through input list
-                const searchWords = ['covid-19', 'trump','yang','goku', 'ramsey'];
-    
+  
                 const matchesFound = titleLowerArray.filter(element => searchWords.includes(element));
     
                 if(matchesFound.length > 0 && itemList[i].style.display !== "none"){
@@ -45,6 +45,22 @@ function hideVideos(){
 window.addEventListener('scroll', function(){
     debounceFunction(hideVideos, 500);
 
+});
+
+chrome.runtime.onConnect.addListener(port => {
+    console.log('connected ', port);
+
+    if (port.name === 'hi') {
+        port.onMessage.addListener(this.processMessage);
+    }
+});
+
+console.log("searchWords:", searchWords)
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    console.log("content Listener Success");
+    searchWords = request.keywords;
+
+    console.log("AFTER content Listenere searchWords:", searchWords)
 });
 
 
