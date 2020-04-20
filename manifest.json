@@ -1,6 +1,6 @@
 {
 	"manifest_version": 2,
-	"name":"Covid Filter",
+	"name":"Youtube Filter",
 	"version": "0.0.03",
 	"content_scripts": [
 		{
@@ -17,9 +17,9 @@
 		"js/background.js"
 		]
 	},
-	"permissions":["tabs", "storage","activeTab"],
+	"permissions":["tabs", "storage", "activeTab"],
 	"browser_action":{
-		"default_icon": "img/covid-filter icon.png",
+		"default_icon": "img/filter icon.png",
 		"default_popup":"popup/popup.html",
 		"default_title":"toggle filter on/off"
 	}

@@ -5,24 +5,23 @@ var background = {
     keywords: [],
 
     init: function(){
-
-        //listen for messages from the popup
+        //**Listen** for messages from Popup to Background
         chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-            if(request.fn in background){
+            if(request.fn in background){ 
                 background[request.fn](request,sender,sendResponse)
             }
         })
-
     },
 
     setKeys: function(request, sender, sendResponse){
         this.keywords = request.keywords;
-        console.log("setting Keys in BG:  ", request.keywords);
+        console.log("Background: setKeys ", request.keywords);
         console.log(this.keywords);
     },
 
     getKeys:function(request, sender, sendResponse){
         sendResponse(this.keywords);
+        console.log("Background: getKeys ", request.keywords);
         console.log(this.keywords);
     }
 };

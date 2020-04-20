@@ -1,7 +1,7 @@
 {
   "name": "webserver",
   "version": "1.0.0",
-  "description": "Clear out Covid stuff on urls",
+  "description": "Filter Out Youtube Videos",
   "main": "index.js",
   "dependencies": {
     "express": "^4.13.2"
@@ -12,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codeChrisM/TrelloAPI.git"
+    "url": "git+https://github.com/codeChrisM/Keyword-Filter-Chrome-Extension-"
   },
   "author": "codeChrisM",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/codeChrisM/TrelloAPI/issues"
+    "url": "https://github.com/codeChrisM/Keyword-Filter-Chrome-Extension-"
   },
   "homepage": "codeChris.com"
 }

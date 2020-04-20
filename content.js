@@ -12,27 +12,31 @@ function debounceFunction(func, delay) {
 }
 
 function hideVideos(){
-    var timerStart = performance.now()
+    var timerStart = performance.now()//speedCheck
 
-    if(document.querySelectorAll("ytd-rich-item-renderer").length){ // used for HOME
+
+    /** WHAT ELEMENTS ARE VIDEOS? **/
+    if(document.querySelectorAll("ytd-rich-item-renderer").length){ // "HOME Page"
         itemList = document.querySelectorAll("ytd-rich-item-renderer");
     }
-    // else if(document.querySelectorAll("ytd-video-renderer").length){ // used for trending listing
-    //     itemList = document.querySelectorAll("ytd-video-renderer");
-    // };
+    else if(document.querySelectorAll("ytd-video-renderer").length){ //"trending"
+        itemList = document.querySelectorAll("ytd-video-renderer");
+    }
 
+    if(itemList.length > 0){
         for(let i=0; itemList.length > i; i++){
             let title = itemList[i].querySelector("h3");
             if(title != null){
                 title = title.innerText;
-                let titleArray = title.split(" ");
-                let titleToLower = titleArray.join().toLowerCase();
-                let titleLowerArray = titleToLower.split(",");
 
-  
-                const matchesFound = titleLowerArray.filter(element => searchWords.includes(element));
-    
-                if(matchesFound.length > 0 ){
+                //1. create an array out of the words in the title that are all lower case
+                let titleArray = title.split(" ").join().toLowerCase().split(",");
+
+                //2. search for any of the filtered words in this title
+                const matchesFound = titleArray.filter(element => searchWords.includes(element));
+
+                //3. show or don't
+                if(matchesFound){
                     console.log(title);
                     itemList[i].style.display = "none";
                 }else{
@@ -40,24 +44,31 @@ function hideVideos(){
                 }
             }
         }
-    var timerEnd = performance.now()
-    console.log("Call time: " + (timerEnd - timerStart) + " milliseconds.")
+    }else{
+        console.log("app won't run because URL of Video not yet supported")
+    }
+
+
+    var timerEnd = performance.now()//speedCheck
+    console.log("Call time: " + (timerEnd - timerStart) + " milliseconds.")//speedCheck
 };  
 
+
 window.addEventListener('scroll', function(){
-    debounceFunction(hideVideos, 500);
+    if(itemList.length > 0){
+        debounceFunction(hideVideos, 200);
+    }
 });
 
-
-
-console.log("searchWords:", searchWords)
+//**LISTEN** Popup to Content
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    console.log("content Listener Success");
     searchWords = request.keywords;
-    console.log("AFTER content Listenere searchWords:", searchWords)
-    debounceFunction(hideVideos, 500);
-    console.log("run debounce");
+    console.log("Content: Listener searchWords:", searchWords)
+    if(itemList.length > 0){
+        hideVideos();
+    }
 });
+
 
 
 
