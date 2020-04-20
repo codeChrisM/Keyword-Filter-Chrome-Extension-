@@ -21,7 +21,7 @@ var background = {
 
     getKeys:function(request, sender, sendResponse){
         sendResponse(this.keywords);
-        console.log("Background: getKeys ", request.keywords);
+        console.log("Background: getKeys ", this.keywords);
         console.log(this.keywords);
     }
 };
