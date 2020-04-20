@@ -1,8 +1,5 @@
 let console = chrome.extension.getBackgroundPage().console;
 
-console.log("running popup");
-
-
 var app = {
 	init:function(){
 
@@ -15,14 +12,14 @@ var app = {
 		
 		for(var i=0; keywordList__items.length > [i]; i++){
 			keywordArray.push(keywordList__items[i].innerText);		
-			console.log(keywordList__items[i].innerText);	
+			// console.log(keywordList__items[i].innerText);	
 		}
 
 		//sent this to background
 		chrome.runtime.sendMessage({fn: 'getKeys'}, function(response){
 			keywordArray = response;
 			
-			console.log("page loaded response is", keywordArray);
+			// console.log("page loaded response is", keywordArray);
 
 			makeList(keywordArray);
 		});
@@ -39,7 +36,7 @@ var app = {
 			chrome.runtime.sendMessage({fn: 'setKeys',  keywords: keywordArray});
 
 
-			console.log("added new word to keywordArray: ", keywordArray);
+			// console.log("added new word to keywordArray: ", keywordArray);
 
 
 		});
@@ -73,7 +70,7 @@ var app = {
 			// Set up a loop that goes through the items in listItems one at a time
 			let numberOfListItems = targetArray.length;
 
-			console.log(targetArray);
+			console.log("targetArray", targetArray);
 			while ( ul_List.firstChild ) {
 			ul_List.removeChild( ul_List.firstChild );
 			}
@@ -85,6 +82,25 @@ var app = {
 				
 				
 				ul_List.appendChild(li);
+
+				let current_li_close= ul_List.lastChild.querySelector('.close-item');
+				console.log(current_li_close)
+
+				current_li_close.addEventListener('click', function(e){
+					e.preventDefault;
+					console.log("im clicked")
+					this.parentElement.remove();
+
+					var array = keywordArray;
+					var newarr = array.filter(function(a){return a !== targetArray[j] });
+					console.log("J:", targetArray[j]);
+					keywordArray = newarr;
+					console.log("keywordArray since Close:", keywordArray);
+
+					chrome.runtime.sendMessage({fn: 'setKeys',  keywords: keywordArray});
+
+					makeList(keywordArray);
+				});
 				
 			}	
 			

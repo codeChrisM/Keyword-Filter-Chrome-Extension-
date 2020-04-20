@@ -32,9 +32,11 @@ function hideVideos(){
   
                 const matchesFound = titleLowerArray.filter(element => searchWords.includes(element));
     
-                if(matchesFound.length > 0 && itemList[i].style.display !== "none"){
+                if(matchesFound.length > 0 ){
                     console.log(title);
                     itemList[i].style.display = "none";
+                }else{
+                    itemList[i].style.display = "block";
                 }
             }
         }
@@ -44,23 +46,17 @@ function hideVideos(){
 
 window.addEventListener('scroll', function(){
     debounceFunction(hideVideos, 500);
-
 });
 
-chrome.runtime.onConnect.addListener(port => {
-    console.log('connected ', port);
 
-    if (port.name === 'hi') {
-        port.onMessage.addListener(this.processMessage);
-    }
-});
 
 console.log("searchWords:", searchWords)
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     console.log("content Listener Success");
     searchWords = request.keywords;
-
     console.log("AFTER content Listenere searchWords:", searchWords)
+    debounceFunction(hideVideos, 500);
+    console.log("run debounce");
 });
 
 

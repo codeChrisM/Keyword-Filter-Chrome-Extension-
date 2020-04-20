@@ -6,7 +6,7 @@ var background = {
 
     init: function(){
 
-        //listen for messanges from the popup
+        //listen for messages from the popup
         chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
             if(request.fn in background){
                 background[request.fn](request,sender,sendResponse)
