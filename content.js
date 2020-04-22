@@ -1,4 +1,4 @@
-let itemList = [];
+let itemList;
 var timerId;
 
 let searchWords;
@@ -16,20 +16,24 @@ function hideVideos(){
 
 
     /** WHAT ELEMENTS ARE VIDEOS? **/
-    if(document.querySelectorAll("ytd-rich-item-renderer").length){ // "HOME Page"
+    if(window.location.href.indexOf("/watch?") > -1){ //watch page
+        itemList = document.querySelectorAll("ytd-compact-video-renderer");
+    }
+    else if(window.location.href.indexOf("/feed") > -1){ //"trending  /feed/trending,"
+        itemList = document.querySelectorAll("ytd-video-renderer");
+    }
+    else if(document.querySelectorAll("ytd-rich-item-renderer").length){ // "HOME Page"
         itemList = document.querySelectorAll("ytd-rich-item-renderer");
     }
-    // else if(document.querySelectorAll("ytd-video-renderer").length){ //"trending"
-    //     itemList = document.querySelectorAll("ytd-video-renderer");
-    // }
-
+        
     
         for(let i=0; itemList.length > i; i++){
+            if(searchWords === undefined){ break;} //escape loop
             let title = itemList[i].querySelector("h3");
             if(title != null){
                 title = title.innerText;
 
-                //1. create an array out of the words in the title that are all lower case
+            //1. create an array out of the words in the title that are all lower case
                 let titleArray = title.split(" ").join().toLowerCase().split(",");
 
                 //2. search for any of the filtered words in this title
@@ -61,10 +65,8 @@ window.addEventListener('scroll', function(){
 //**LISTEN** Popup to Content
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     searchWords = request.keywords;
-    console.log("Content: Listener searchWords:", searchWords)
-    
-        hideVideos();
-    
+    console.log("Content: Listener searchWords:", searchWords)    
+        hideVideos();    
 });
 
 
